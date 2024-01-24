@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Список сотрудников</title>
+</head>
+
+<body>
+    <h1>Список сотрудников</h1>
+    <form method="GET" action="{% url 'employees_list' %}">
+        <input type="text" name="search" value="{{ search_query }}" placeholder="Поиск">
+        <button type="submit">Искать</button>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th><a href="?sort_by=name">Имя</a></th>
+                <th><a href="?sort_by=position">Должность</a></th>
+                <th><a href="?sort_by=date_of_receipt">Дата поступления</a></th>
+                <th><a href="?sort_by=salory">Зарплата</a></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in employees %}
+            <tr>
+                <td>{{ employee.name }}</td>
+                <td>{{ employee.position }}</td>
+                <td>{{ employee.date_of_receipt }}</td>
+                <td>{{ employee.salory }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">Нет результатов</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+
+</html>
