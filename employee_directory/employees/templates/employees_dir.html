@@ -1,4 +1,5 @@
 {% load mptt_tags %}
+
 <ul>
     {% recursetree employee %}
     <li>
@@ -12,3 +13,11 @@
     </li>
     {% endrecursetree %}
 </ul>
+
+
+<a href="{% url 'login' %}">Войти</a>
+
+
+<a href="{% url 'logout' %}">Выйти</a>
+
+<a href="{% url 'employees_list' %}">Список сотрудников</a>

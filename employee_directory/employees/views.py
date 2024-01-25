@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from employees.models import Employee
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 
 
 def show_employee(request):
     return render(request, "employees_dir.html", {'employee': Employee.objects.all()})
 
 
+@login_required
 def show_employees_list(request):
     search_query = request.GET.get('search', '')  # Получаем параметр поиска из запроса GET
     sort_by = request.GET.get('sort_by', 'name')  # Получаем параметр сортировки из запроса GET
