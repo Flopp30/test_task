@@ -10,11 +10,11 @@ class Command(BaseCommand):
     help = 'Fill employees with random data'
 
     def add_arguments(self, parser):
-        parser.add_argument('--count', type=int, help='Employees count (default 50)')
+        parser.add_argument('--count', type=int, help='Employees count (default 500)')
         parser.add_argument('--tree_id', type=int, help='Employees tree_id (default create new tree)')
 
     def handle(self, *args, **options):
-        EmployerSeeder.seed(count=options["count"] or 50, tree_id=options["tree_id"])
+        EmployerSeeder.seed(count=options["count"] or 500, tree_id=options["tree_id"])
 
 
 class EmployerSeeder:
