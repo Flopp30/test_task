@@ -1,5 +1,7 @@
 from pathlib import Path
 import os
+
+from django.urls import reverse_lazy
 from environs import Env
 
 
@@ -97,6 +99,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTH_USER_MODEL = 'users.User'
+LOGIN_URL = reverse_lazy("users:login")
+LOGIN_REDIRECT_URL = reverse_lazy("employees:employees_list")
+LOGOUT_REDIRECT_URL = reverse_lazy("users:login")
+
 
 MPTT_DEFAULT_LEVEL_INDICATOR = '--'
 

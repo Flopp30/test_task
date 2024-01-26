@@ -1,7 +1,7 @@
+from django.conf import settings
 from django.shortcuts import render, HttpResponseRedirect
 from users.forms import UserLoginForm, UserRegistrationForm
 from django.contrib import auth
-from django.urls import reverse
 
 
 def login(request):
@@ -13,11 +13,11 @@ def login(request):
             user = auth.authenticate(username=username, password=password)
             if user:
                 auth.login(request, user)
-                return HttpResponseRedirect(reverse('employees_list'))
+                return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
     else:
         form = UserLoginForm()
-    context = {'form': UserLoginForm()}
-    return render(request, 'login.html', context)
+        context = {'form': form}
+        return render(request, 'login.html', context)
 
 
 def registration(request):
@@ -25,7 +25,7 @@ def registration(request):
         form = UserRegistrationForm(data=request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('login'))
+            return HttpResponseRedirect(settings.LOGIN_URL)
     else:
         form = UserRegistrationForm()
     context = {'form': form}
@@ -34,4 +34,4 @@ def registration(request):
 
 def logout(request):
     auth.logout(request)
-    return HttpResponseRedirect(reverse('login'))
+    return HttpResponseRedirect(settings.LOGIN_URL)

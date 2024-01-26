@@ -8,13 +8,13 @@
 
 <body>
     <h1>Список сотрудников</h1>
-    <a href="{% url 'create_employee' %}">
+    <a href="{% url 'employees:create_employee' %}">
         <h3>Добавить сотрудника</h3>
     </a>
-    <a href="{% url 'employees_dir' %}">
+    <a href="{% url 'employees:employees_dir' %}">
         <h3>Вернуться на страницу иерархии</h3>
     </a>
-    <form method="GET" action="{% url 'employees_list' %}">
+    <form method="GET" action="{% url 'employees:employees_list' %}">
         <input type="text" name="search" value="{{ search_query }}" placeholder="Поиск">
         <button type="submit">Искать</button>
     </form>
@@ -34,8 +34,8 @@
                 <td>{{ employee.position }}</td>
                 <td>{{ employee.date_of_receipt }}</td>
                 <td>{{ employee.salary }}</td>
-                <th><a href="{% url 'edit_employee' employee_id=employee.id %}">Изменить данные</a>___</th>
-                <th><a href="{% url 'delete_employee' employee_id=employee.id %}">Удалить сотрудника</a></th>
+                <th><a href="{% url 'employees:edit_employee' employee_id=employee.id %}">Изменить данные</a>___</th>
+                <th><a href="{% url 'employees:delete_employee' employee_id=employee.id %}">Удалить сотрудника</a></th>
             </tr>
             {% empty %}
             <tr>

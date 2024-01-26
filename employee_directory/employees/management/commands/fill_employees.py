@@ -47,7 +47,7 @@ class EmployerSeeder:
                 'position': lambda x: seeder.faker.job(),
                 'date_of_receipt': lambda x: seeder.faker.date_between(start_date='-10y', end_date='today'),
                 'salary': lambda x: seeder.faker.random_int(min=10000, max=200000, step=5000),
-                "parent": random.choice(prev_level_parents),
+                "parent": lambda x: seeder.faker.random_choices(prev_level_parents)[0],
                 "lft": None,
                 "rght": None,
                 "level": level,
