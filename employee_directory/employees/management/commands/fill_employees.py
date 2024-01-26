@@ -1,4 +1,5 @@
 import random
+from typing import Callable
 
 from django.core.management import BaseCommand
 from django_seed import Seed
@@ -12,15 +13,19 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--count', type=int, help='Employees count (default 500)')
         parser.add_argument('--tree_id', type=int, help='Employees tree_id (default create new tree)')
+        parser.add_argument('--max_lvl', type=int, help='Employees max level (default 5)')
 
     def handle(self, *args, **options):
-        EmployerSeeder.seed(count=options["count"] or 500, tree_id=options["tree_id"])
+        EmployerSeeder.seed(count=options["count"] or 50_000,
+                            tree_id=options["tree_id"],
+                            max_lvl=options["max_lvl"] or 5,
+                            write_func=self.stdout.write)
 
 
 class EmployerSeeder:
 
     @classmethod
-    def seed(cls, count: int, tree_id: int | None = None):
+    def seed(cls, count: int, tree_id: int | None = None, max_lvl: int = 5, write_func: Callable = None):
         seeder = Seed.seeder()
         default = {
             'name': seeder.faker.name(),
@@ -32,10 +37,10 @@ class EmployerSeeder:
         if not (root := Employee.objects.filter(parent=None, tree_id=tree_id, level=0).first()):
             root = Employee.objects.create(**default, parent=None, level=0, tree_id=tree_id or 1)
 
-        level = 1
-        create_count_by_one_step = max(count // 5, 1)
+        create_count_by_one_step = max(count // max_lvl, 1)
         total_counter = 0
-        while count > 0:
+        level = 1
+        while total_counter < count:
             prev_level_parents = Employee.objects.filter(level=level - 1, tree_id=root.tree_id)
             seeder.add_entity(Employee, create_count_by_one_step, {
                 'name': lambda x: seeder.faker.name(),
@@ -49,9 +54,10 @@ class EmployerSeeder:
                 "tree_id": root.tree_id,
             })
             res = seeder.execute()
-            count -= create_count_by_one_step
             level += 1
             created_count = len(*res.values())
             total_counter += created_count
-            print(f'Created {created_count} employees')
-        print("Total employees created: ", total_counter)
+            if write_func:
+                write_func(f'Created {created_count} employees')
+        if write_func:
+            write_func(f'Total employees created: {total_counter}')
