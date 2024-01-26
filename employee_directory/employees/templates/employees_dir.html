@@ -1,9 +1,15 @@
 {% load mptt_tags %}
 
+<a href="{% url 'login' %}">Войти</a>
+
+<a href="{% url 'logout' %}">Выйти</a>
+
+<a href="{% url 'employees_list' %}">Список сотрудников</a>
+
 <ul>
     {% recursetree employee %}
     <li>
-        {{ node.name }}
+        {{ node.name }}_____ Должность:
         {{ node.position }}
         {% if not node.is_leaf_node %}
         <ul class="children">
@@ -13,11 +19,3 @@
     </li>
     {% endrecursetree %}
 </ul>
-
-
-<a href="{% url 'login' %}">Войти</a>
-
-
-<a href="{% url 'logout' %}">Выйти</a>
-
-<a href="{% url 'employees_list' %}">Список сотрудников</a>

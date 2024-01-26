@@ -6,7 +6,7 @@ class Employee(MPTTModel):
     name = models.CharField(max_length=50)
     position = models.CharField(max_length=50)
     date_of_receipt = models.DateField()
-    salory = models.FloatField()
+    salary = models.FloatField()
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
 
     class MPTTMeta:
