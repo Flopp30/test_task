@@ -49,10 +49,10 @@ def delete_employee(request, employee_id):
 def edit_employee(request, employee_id):
     employee = get_object_or_404(Employee, id=employee_id)
     if request.method == 'POST':
-        form = EmployeeEditForm(request.POST, instance=employee)
+        form = EmployeeEditForm(request.POST, request.FILES, instance=employee)
         if form.is_valid():
             form.save()
-            return redirect('employees_list')
+            return redirect('edit_employee', employee_id)
     else:
         form = EmployeeEditForm(instance=employee)
 

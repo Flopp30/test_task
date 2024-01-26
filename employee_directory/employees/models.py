@@ -7,6 +7,7 @@ class Employee(MPTTModel):
     position = models.CharField(max_length=50)
     date_of_receipt = models.DateField()
     salary = models.FloatField()
+    photo = models.ImageField(upload_to='photos/', blank=True, null=True)
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
 
     class MPTTMeta:
