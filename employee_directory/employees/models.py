@@ -12,3 +12,6 @@ class Employee(MPTTModel):
 
     class MPTTMeta:
         order_insertion_by = ['name']
+
+    def __str__(self):
+        return f"{self.name}: {self.position}"

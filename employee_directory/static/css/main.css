@@ -1,0 +1,29 @@
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.main_content {
+    margin: 100px 10px 50px 10px;
+}
+
+.sticky-table-header {
+    position: sticky;
+    top: 50px;
+    z-index: 80;
+}
+
+.employee-photo-min {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+}

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Список сотрудников{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="container-fluid row justify-content-between mb-2">
+            <form class="col-4" method="GET" action="{% url 'employees:employees_list' %}">
+                <div class="input-group">
+                    <input class="form-control" type="text" name="search" value="{{ search_query }}"
+                           placeholder="Поиск">
+                    <button class="btn btn-sm btn-outline-secondary" type="submit">Искать</button>
+                </div>
+            </form>
+            <div class="col-2 text-center">
+                <a class="btn btn-sm btn-outline-secondary"
+                   href="{% url 'employees:create_employee' %}">
+                    Добавить сотрудника
+                </a>
+            </div>
+        </div>
+        <table class="table table-sm table-hover">
+            <thead class="thead-dark sticky-table-header">
+            <tr>
+                <th class="text-center">Actions</th>
+                <th class="text-center"><a href="?sort_by=pk">ID</a></th>
+                <th class="text-center"><a href="?sort_by=pk">Фото</a></th>
+                <th class="text-center"><a href="?sort_by=name">Имя</a></th>
+                <th><a href="?sort_by=position">Должность</a></th>
+                <th class="text-center"><a href="?sort_by=date_of_receipt">Дата поступления</a></th>
+                <th class="text-center"><a href="?sort_by=salary">Зарплата</a></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for employee in page_obj %}
+                <tr>
+                    <td class="text-center">
+                        <a href="{% url 'employees:edit_employee' pk=employee.id %}"
+                           class="btn btn-sm btn-outline-secondary">
+                            🖌
+                        </a>
+                        <a href="{% url 'employees:delete_employee' pk=employee.id %}"
+                           class="btn btn-sm btn-outline-secondary ml-2">
+                            🗑
+                        </a>
+                    </td>
+                    <td>{{ employee.pk }}</td>
+                    <td class="text-center">
+                        {% if employee.photo %}
+                            <img class="employee-photo-min" src="{{ employee.photo.url }}" alt="Фото сотрудника">
+                        {% else %}
+                            <img class="employee-photo-min" src="{% static 'default_image.jpg' %}" alt="Изображение по умолчанию">
+                        {% endif %}
+                    </td>
+                    <td class="text-center">{{ employee.name }}</td>
+                    <td>{{ employee.position }}</td>
+                    <td>{{ employee.date_of_receipt }}</td>
+                    <td>{{ employee.salary }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">Нет результатов</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% include 'paginator.html' with pagination_url=request.build_absolute_uri|safe %}
+    </div>
+{% endblock %}

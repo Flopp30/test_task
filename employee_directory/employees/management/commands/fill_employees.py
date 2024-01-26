@@ -1,6 +1,7 @@
 import random
 from typing import Callable
 
+from django.conf import settings
 from django.core.management import BaseCommand
 from django_seed import Seed
 
@@ -52,6 +53,7 @@ class EmployerSeeder:
                 "rght": None,
                 "level": level,
                 "tree_id": root.tree_id,
+                "photo": settings.PATH_TO_DEFAULT_PHOTO,
             })
             res = seeder.execute()
             level += 1

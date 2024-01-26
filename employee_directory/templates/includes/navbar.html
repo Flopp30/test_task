@@ -1,0 +1,58 @@
+<nav class="navbar navbar-expand-md navbar-light bg-light fixed-top" style="background-color: #e3f2fd;">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Тестовое задание</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page"
+                       href="{% url 'employees:employees_dir' %}">Иерархия</a>
+                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            Сотрудники
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{% url 'employees:employees_list' %}">Список
+                                сотрудников</a></li>
+                            <li><a class="dropdown-item" href="{% url 'employees:create_employee' %}">Добавить
+                                сотрудника</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+            <ul class="navbar-nav">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <span class="nav-link disabled">Привет, {{ user.username }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <form class="nav-link" action="{% url 'users:logout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="cursor-pointer"
+                                    style="background: none; border: none; padding: 0; margin: 0; font: inherit; cursor: pointer;">
+                                Выйти
+                            </button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link cursor-pointer" href="{% url 'users:login' %}">
+                            Войти
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link cursor-pointer" href="{% url 'users:registration' %}">
+                            Зарегистрироваться
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

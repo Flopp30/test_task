@@ -1,0 +1,14 @@
+<ul>
+    {% for employee in children %}
+        <button class="load-more btn btn-sm btn-outline-secondary"
+                data-node-id="{{ employee.id }}"
+                {% if not employee.is_leaf_node %}
+                onclick="loadOnClick(this)"
+                {% else %}
+                disabled
+                {% endif %}>
+            {{ employee.pk }}. {{ employee.name }}. Должность: {{ employee.position }}
+        </button>
+        <div id="children-{{ employee.id }}"></div>
+    {% endfor %}
+</ul>

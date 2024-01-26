@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% block title %}Редактирование сотрудника{% endblock %}
+
+{% block content %}
+    <div class="container col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
+        <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% bootstrap_form form exclude="photo" %}
+            <div>
+                {% bootstrap_field form.photo %}
+                <label for="{{ form.photo.id_for_label }}"></label>
+                {% if form.instance.photo %}
+                    <span>Current image</span>
+                    <img class="employee-photo-min" src="{{ form.instance.photo.url }}" alt="Фото сотрудника">
+                {% endif %}
+            </div>
+            <button class="btn btn-sm btn-outline-secondary" type="submit">Сохранить</button>
+        </form>
+    </div>
+{% endblock %}

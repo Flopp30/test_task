@@ -4,7 +4,6 @@ import os
 from django.urls import reverse_lazy
 from environs import Env
 
-
 env = Env()
 env.read_env()
 
@@ -24,6 +23,7 @@ INSTALLED_APPS = [
     # зависимости
     "django_seed",
     'mptt',
+    "django_bootstrap5",
 
     # свои приложения
     'employees',
@@ -45,7 +45,7 @@ ROOT_URLCONF = 'employee_directory.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -60,7 +60,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'employee_directory.wsgi.application'
 
-
 DATABASES = {
     'default': {
         'ENGINE': env("DB_ENGINE", 'django.db.backends.postgresql'),
@@ -71,7 +70,6 @@ DATABASES = {
         'PASSWORD': env('DB_PASSWORD'),
     }
 }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -88,27 +86,25 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 AUTH_USER_MODEL = 'users.User'
 LOGIN_URL = reverse_lazy("users:login")
 LOGIN_REDIRECT_URL = reverse_lazy("employees:employees_list")
 LOGOUT_REDIRECT_URL = reverse_lazy("users:login")
 
-
 MPTT_DEFAULT_LEVEL_INDICATOR = '--'
 
-
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_DIR = os.path.join(BASE_DIR, 'static/')
+STATICFILES_DIRS = [STATIC_DIR]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+PATH_TO_DEFAULT_PHOTO = os.path.join(STATIC_DIR, 'default_image.jpg')

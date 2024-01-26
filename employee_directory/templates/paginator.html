@@ -1,0 +1,69 @@
+{% load django_bootstrap5 %}
+<nav id="pagination-container" aria-label="pagination" class="mt-3">
+    <ul class="pagination justify-content-center">
+        {% if page_obj %}
+            {% if available_per_page_range %}
+                <li>
+                    <select name="per_page" id="per_page" class="form-control form-control-sm text-primary"
+                            onchange="updateTableWithPaginationParam('{{ pagination_url }}', 'per_page', this.value)">
+                        {% for available_per_page in available_per_page_range %}
+                            <option value="{{ available_per_page }}"
+                                    {% if available_per_page == per_page_value %}selected{% endif %}>
+                                {{ available_per_page }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </li>
+            {% endif %}
+            {% if page_obj.has_previous %}
+                <li class="page-item ml-1">
+                    <button type="button"
+                            onclick="updateTableWithPaginationParam('{{ pagination_url }}', 'page', {{ page_obj.previous_page_number }})"
+                            class="page-link"
+                    >
+                        Previous Page
+                    </button>
+                </li>
+            {% endif %}
+            {% for page_number in page_obj.adjusted_elided_pages %}
+                {% if page_number == page_obj.paginator.ELLIPSIS %}
+                    <li class="page-item ml-1">
+                        <span class="page-link">{{ page_number }}</span>
+                    </li>
+                {% else %}
+                    <li class="page-item ml-1 {% if page_number == page_obj.number %}active disabled {% endif %}">
+                        <button class="page-link" type="button"
+                                onclick="updateTableWithPaginationParam('{{ pagination_url }}', 'page',  {{ page_number }})">{{ page_number }}</button>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <li class="page-item ml-1">
+                    <button
+                            type="button"
+                            class="page-link"
+                            onclick="updateTableWithPaginationParam('{{ pagination_url }}', 'page', {{ page_obj.next_page_number }})"
+                    >
+                        Next Page
+                    </button>
+                </li>
+            {% endif %}
+        {% else %}
+            <li class="page-item ml-1 active disabled">
+                <button class="page-link" type="button">1</button>
+            </li>
+        {% endif %}
+        <li class="page-item ml-1 active disabled">
+            <button class="page-link" type="button">Total: {{ page_obj.paginator.count }}</button>
+        </li>
+    </ul>
+</nav>
+
+<script>
+
+    function updateTableWithPaginationParam(url_, paramName, pageNumber) {
+        let url = new URL(url_);
+        url.searchParams.set(paramName, pageNumber);
+        location.href = url.toString();
+    }
+</script>

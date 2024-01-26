@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load mptt_tags django_bootstrap5 %}
+{% block title %}Дерево сотрудников{% endblock %}
+{% block content %}
+    <div class="container">
+        <ul id="level-1">
+            {% for employee in root_employees %}
+                <li>
+                    <button class="load-more btn btn-sm btn-outline-secondary"
+                            data-node-id="{{ employee.id }}"
+                            {% if not employee.is_leaf_node %}
+                            onclick="loadOnClick(this)"
+                            {% else %}
+                            disabled
+                            {% endif %}>
+                        {{ employee.pk }}. {{ employee.name }}. Должность: {{ employee.position }}
+                    </button>
+                    <div id="children-{{ employee.id }}"></div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script>
+        function loadOnClick(btn) {
+            let nodeId = btn.getAttribute('data-node-id');
+            let childrenContainer = document.getElementById('children-' + nodeId);
+            childrenContainer.style.display = 'block'
+
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', "{% url 'employees:employees_tree_children' %}?parent_pk=" + nodeId, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    childrenContainer.innerHTML += xhr.responseText;
+                }
+            };
+            xhr.send();
+
+            btn.disabled = true;
+        }
+    </script>
+{% endblock %}
